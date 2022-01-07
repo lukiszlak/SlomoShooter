@@ -66,9 +66,10 @@ void ASloMoPointAndClickCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	// We need cheat manager for using SloMo
-	CheatManager = this->GetController()->CastToPlayerController()->CheatManager;
+	WorldSettings = this->GetController()->CastToPlayerController()->GetWorldSettings();
 
-	bIsSloMo = false;
+	bIsSloMo = true;
+	SetSloMo(CurrentSloMo);
 }
 
 
@@ -102,7 +103,7 @@ void ASloMoPointAndClickCharacter::Tick(float DeltaSeconds)
 		}
 	}
 
-	// Szlachu Test of getting player movement
+	// Szlachu Test of getting player movement TODO refactor it / breake to smaller functions, It's not readable as is
 	if (!GetVelocity().Equals(FVector(0, 0, 0), 100) && bIsSloMo == false)
 	{
 		bIsSloMo = true;
@@ -122,19 +123,23 @@ void ASloMoPointAndClickCharacter::Tick(float DeltaSeconds)
 
 	if (CurrentSloMo != DesiredSloMo)
 	{
-		float MarginHolder = DeltaSecondsWithMargin - GetWorld()->GetRealTimeSeconds();
+		float RealTimeSeconds = GetWorld()->GetRealTimeSeconds(); // Can be a pain when we add pause 
+		float MarginHolder = DeltaSecondsWithMargin - RealTimeSeconds;
 		float LerpAlpha = FMath::Clamp(MarginHolder / TimeMargin, 0.0f, 1.0f);
 		CurrentSloMo = FMath::Lerp(DesiredSloMo, OldSloMo, LerpAlpha);
 
 		FString DebugMessageHolder = FString::Format(TEXT("Old Slomo: {0}\nCurrent Slomo: {1}\nDesired Slomo: {2}\nLerp Alpha: {3}\n"), { OldSloMo, CurrentSloMo, DesiredSloMo, LerpAlpha});
 		GEngine->AddOnScreenDebugMessage(-1, 0.01f, FColor::Red, DebugMessageHolder);
 
-		SetSlowMo(CurrentSloMo);
+		SetSloMo(CurrentSloMo);
 	}
 	//
 }
 
-void ASloMoPointAndClickCharacter::SetSlowMo(float SloMoAmmount)
+void ASloMoPointAndClickCharacter::SetSloMo(float SloMoAmmount)
 {
-	CheatManager->Slomo(SloMoAmmount);
+	if (WorldSettings != nullptr)
+	{
+		WorldSettings->SetTimeDilation(SloMoAmmount);
+	}
 }

@@ -26,8 +26,11 @@ public:
 	/** Returns CursorToWorld subobject **/
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slomo")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SloMo")
 	float CurrentSloMo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SloMo")
+	float TimeMargin = 1.0f;
 
 private:
 	/** Top down camera */
@@ -46,12 +49,9 @@ private:
 	float OldSloMo = 1;
 	float DesiredSloMo = 1;
 	float DeltaSecondsWithMargin = 1;
-	UCheatManager* CheatManager;
+	AWorldSettings* WorldSettings;
 
-	void SetSlowMo(float SloMoAmmount);
+	void SetSloMo(float SloMoAmmount);
 
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character")
-	float TimeMargin = 1.0f;
 };
 
