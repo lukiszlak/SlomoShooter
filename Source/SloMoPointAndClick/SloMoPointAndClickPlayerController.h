@@ -14,6 +14,12 @@ class ASloMoPointAndClickPlayerController : public APlayerController
 public:
 	ASloMoPointAndClickPlayerController();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SloMo")
+		float CurrentSloMo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SloMo")
+		float TimeMargin = 1.0f;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -41,6 +47,22 @@ protected:
 	/** Input handlers for SetDestination action. */
 	void OnSetDestinationPressed();
 	void OnSetDestinationReleased();
+
+private:
+	bool bIsSloMo;
+	bool bIsDestinationReached;
+	float OldSloMo = 1;
+	float DesiredSloMo = 0.05f; // TODO maybe change it? Current logic need it to not be 1
+	float DeltaSecondsWithMargin = 1;
+	float DistanceToDestination;
+	float RealTimeSeconds;
+	float MarginHolder;
+	float LerpAlpha;
+
+	AWorldSettings* WorldSettings;
+	FVector Destination;
+
+	void SetSloMo(float SloMoAmmount);
 
 };
 

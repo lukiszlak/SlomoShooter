@@ -26,11 +26,7 @@ public:
 	/** Returns CursorToWorld subobject **/
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SloMo")
-	float CurrentSloMo;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SloMo")
-	float TimeMargin = 1.0f;
 
 private:
 	/** Top down camera */
@@ -44,14 +40,6 @@ private:
 	/** A decal that projects to the cursor location. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UDecalComponent* CursorToWorld;
-
-	bool bIsSloMo;
-	float OldSloMo = 1;
-	float DesiredSloMo = 1;
-	float DeltaSecondsWithMargin = 1;
-	AWorldSettings* WorldSettings;
-
-	void SetSloMo(float SloMoAmmount);
 
 };
 

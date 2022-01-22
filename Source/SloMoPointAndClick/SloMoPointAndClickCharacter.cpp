@@ -65,11 +65,12 @@ void ASloMoPointAndClickCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// We need cheat manager for using SloMo
-	WorldSettings = this->GetController()->CastToPlayerController()->GetWorldSettings();
+	//// We need cheat manager for using SloMo
+	//WorldSettings = this->GetController()->CastToPlayerController()->GetWorldSettings();
 
-	bIsSloMo = true;
-	SetSloMo(CurrentSloMo);
+	//bIsSloMo = true;
+	//bIsDestinationReached = true;
+	//SetSloMo(CurrentSloMo);
 }
 
 
@@ -102,44 +103,5 @@ void ASloMoPointAndClickCharacter::Tick(float DeltaSeconds)
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
 	}
-
-	// Szlachu Test of getting player movement TODO refactor it / breake to smaller functions, It's not readable as is
-	if (!GetVelocity().Equals(FVector(0, 0, 0), 100) && bIsSloMo == false)
-	{
-		bIsSloMo = true;
-		DeltaSecondsWithMargin = GetWorld()->GetRealTimeSeconds() + TimeMargin;
-		OldSloMo = CurrentSloMo;
-		DesiredSloMo = 1.0f;
-		// TODO add some sort of bool/enum/check if we have already started changing SloMo ammount
-		// Also think of something else better sounding then SloMoAmmount
-	}
-	else if (GetVelocity().Equals(FVector(0, 0, 0), 100) && bIsSloMo == true)
-	{
-		bIsSloMo = false;
-		DeltaSecondsWithMargin = GetWorld()->GetRealTimeSeconds() + TimeMargin;
-		OldSloMo = CurrentSloMo;
-		DesiredSloMo = 0.05f;
-	}
-
-	if (CurrentSloMo != DesiredSloMo)
-	{
-		float RealTimeSeconds = GetWorld()->GetRealTimeSeconds(); // Can be a pain when we add pause 
-		float MarginHolder = DeltaSecondsWithMargin - RealTimeSeconds;
-		float LerpAlpha = FMath::Clamp(MarginHolder / TimeMargin, 0.0f, 1.0f);
-		CurrentSloMo = FMath::Lerp(DesiredSloMo, OldSloMo, LerpAlpha);
-
-		FString DebugMessageHolder = FString::Format(TEXT("Old Slomo: {0}\nCurrent Slomo: {1}\nDesired Slomo: {2}\nLerp Alpha: {3}\n"), { OldSloMo, CurrentSloMo, DesiredSloMo, LerpAlpha});
-		GEngine->AddOnScreenDebugMessage(-1, 0.01f, FColor::Red, DebugMessageHolder);
-
-		SetSloMo(CurrentSloMo);
-	}
-	//
 }
 
-void ASloMoPointAndClickCharacter::SetSloMo(float SloMoAmmount)
-{
-	if (WorldSettings != nullptr)
-	{
-		WorldSettings->SetTimeDilation(SloMoAmmount);
-	}
-}
