@@ -14,6 +14,11 @@ ASloMoPointAndClickPlayerController::ASloMoPointAndClickPlayerController()
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
 }
 
+void ASloMoPointAndClickPlayerController::BeginPlay()
+{
+	SetSloMo(CurrentSloMo);
+}
+
 void ASloMoPointAndClickPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
@@ -48,23 +53,6 @@ void ASloMoPointAndClickPlayerController::PlayerTick(float DeltaTime)
 
 			DesiredSloMo = 0.05f; // TODO change it to variable
 		}
-
-		//if (!GetVelocity().Equals(FVector(0, 0, 0), 100) && bIsSloMo == false)
-		//{
-		//	bIsSloMo = true;
-		//	DeltaSecondsWithMargin = GetWorld()->GetRealTimeSeconds() + TimeMargin;
-		//	OldSloMo = CurrentSloMo;
-		//	DesiredSloMo = 1.0f;
-		//	// TODO add some sort of bool/enum/check if we have already started changing SloMo ammount
-		//	// Also think of something else better sounding then SloMoAmmount
-		//}
-		//else if (GetVelocity().Equals(FVector(0, 0, 0), 100) && bIsSloMo == true)
-		//{
-		//	bIsSloMo = false;
-		//	DeltaSecondsWithMargin = GetWorld()->GetRealTimeSeconds() + TimeMargin;
-		//	OldSloMo = CurrentSloMo;
-		//	DesiredSloMo = 0.05f;
-		//}
 
 		if (!FMath::IsNearlyEqual(CurrentSloMo, DesiredSloMo, 0.0001f))
 		{

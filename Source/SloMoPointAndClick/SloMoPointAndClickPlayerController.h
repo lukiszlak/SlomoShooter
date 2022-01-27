@@ -15,12 +15,14 @@ public:
 	ASloMoPointAndClickPlayerController();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SloMo")
-		float CurrentSloMo;
+		float CurrentSloMo = 0.05f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SloMo")
 		float TimeMargin = 1.0f;
 
 protected:
+
+	virtual void BeginPlay() override;
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
 
