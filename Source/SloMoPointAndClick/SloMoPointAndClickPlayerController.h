@@ -18,7 +18,7 @@ public:
 		float CurrentSloMo = 0.05f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SloMo")
-		float TimeMargin = 1.0f;
+		float TimeMargin = 1.5f;
 
 protected:
 
@@ -64,8 +64,9 @@ private:
 	AWorldSettings* WorldSettings;
 	FVector Destination;
 
+	void SetDesiredSloMoViaDistanceToTarget();
+	void SetSloMoOverTime();
 	void SetSloMo(float SloMoAmmount);
-
 };
 
 
