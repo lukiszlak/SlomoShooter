@@ -150,7 +150,7 @@ void ASloMoPointAndClickPlayerController::SetSloMo(float SloMoAmmount)
 void ASloMoPointAndClickPlayerController::SetDesiredSloMoViaDistanceToTarget()
 {
 	DistanceToDestination = FVector::Dist(this->GetPawn()->GetActorLocation(), Destination);
-	if (DistanceToDestination >= 500)
+	if (DistanceToDestination >= 350)
 	{
 		if (!FMath::IsNearlyEqual(DesiredSloMo, 1.0f, 0.0001f))
 		{
